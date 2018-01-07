@@ -18,22 +18,28 @@ task stringsAndTypes {
         println "Nice work abbreviating the task name"
 
         // TODO: Create a variable named foo and assign it the value 4.2
+        def foo = 4.2
 
         // TODO: Print the value and class of foo
+        println "The value of foo is ${foo}. Foo is a ${foo.class}."
 
         // TODO: Use string interpolation to print the square root of 127
         // HINT: http://docs.oracle.com/javase/7/docs/api/java/lang/Math.html
-
+        foo = new java.lang.Math()
+        println "the square of 127 = ${foo.sqrt(127)}"
         // TODO: Assign the current date to foo and print it, along with its type
         // HINT:
         // http://docs.oracle.com/javase/7/docs/api/java/util/package-summary.html
-
-
+        foo = new java.util.Date()
+        println foo
         // TODO: Use the `substring` method to extract my name from this string
         def hello = "Hello, Jeremy."
-
+        print hello = hello - "Jeremy."
+        println "Max."
+        println hello
         // TODO: Use `toUpperCase` to capitalize and print my name
-
+        foo = "jeremy"
+        println foo.toUpperCase()
     }
 }
 
@@ -42,10 +48,10 @@ task closures {
     doLast {
         // TODO: Declare a closure that takes two arguments and adds them together
         // HINT: http://www.groovy-lang.org/closures.html
-
+        def added = {a, b -> a + b }
         // TODO: Call your closure with arguments 17 and 25, and print the result
         // Beware that something like `println addTwo 17, 25` is ambiguous
-
+        println added( 3, 5)
     }
 }
 
@@ -53,11 +59,18 @@ task lists {
     doLast {
         // TODO: Declare a list containing 5 of your favorite candies
         // HINT: Try searching for "groovy list literal"
-
+        def myList = ['Jelly', 'Belly', 'candy', 'Handy', 'Sandy']
         // TODO: Create a new list of your candies in all caps
         // HINT: http://mrhaki.blogspot.ca/2010/05/groovy-goodness-use-collect-with.html
-
+        println myList = myList*.toUpperCase()
         // TODO: Print each capital candy
+        myList.collect {println it}
+    }
+}
 
+task foo {
+    doLast{
+        def foo = "bar"
+        println "$foo + foo = ${foo + "foo"}"
     }
 }
