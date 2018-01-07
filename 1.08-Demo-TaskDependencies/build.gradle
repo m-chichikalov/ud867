@@ -8,6 +8,35 @@ dependencies and ordering.
 We'll discuss three ways to configure the relationships between tasks:
 `dependsOn`, `finalizedBy`, and `mustRunAfter`.
 
+The use case for `mustRunAfter` is slightly less obvious. Say we have a long
+running process that's unlikely to fail, like deploying some artifact to a
+continuous integration server, and we also have a short running task that is
+likely to fail, like running unit tests. Those two tasks don't have any
+dependency relationship, but if we're running both, we would really like the
+unit tests to run before the integration tests.
+
+To continue our morning routine example, let's consider showering and putting
+on a fragrance like perfume or cologne. Putting on a fragrance doesn't require
+showering, and showering doesn't require putting on a fragrance, but if we're
+going to both take a shower and also put on a fragrance, we should take the
+shower first. Let's create those tasks and the relationship between them.
+
+*/
+
+task takeShower {
+    doLast {
+        println "Taking a shower."
+    }
+}
+
+task putOnFragrance {
+    shouldRunAfter "takeShower"
+    doLast{
+        println "Smellin' fresh!"
+    }
+}
+
+/*
 Task A `dependsOn` task B if task A can't do its work without task B having
 done its work. To take a familiar example, when you're getting up in the
 morning, you can't put on your shoes without putting on your socks first.
@@ -55,35 +84,6 @@ task brushYourTeeth {
     }
 }
 
-/*
-
-The use case for `mustRunAfter` is slightly less obvious. Say we have a long
-running process that's unlikely to fail, like deploying some artifact to a
-continuous integration server, and we also have a short running task that is
-likely to fail, like running unit tests. Those two tasks don't have any
-dependency relationship, but if we're running both, we would really like the
-unit tests to run before the integration tests.
-
-To continue our morning routine example, let's consider showering and putting
-on a fragrance like perfume or cologne. Putting on a fragrance doesn't require
-showering, and showering doesn't require putting on a fragrance, but if we're
-going to both take a shower and also put on a fragrance, we should take the
-shower first. Let's create those tasks and the relationship between them.
-
-*/
-
-task takeShower {
-    doLast {
-        println "Taking a shower."
-    }
-}
-
-task putOnFragrance {
-    shouldRunAfter "takeShower"
-    doLast{
-        println "Smellin' fresh!"
-    }
-}
 
 /*
 
@@ -98,20 +98,18 @@ depend on multiple tasks:
 task getReady {
     // Remember that when assigning a collection to a property, we need the
     // equals sign
-    dependsOn = ["takeShower", "eatBreakfast", "putOnShoes"]
-}
-
+    dependsOn = ["putOnShoes","takeShower", "eatBreakfast" ]
 /*
-
 Oops, we put on our shoes before taking a shower! Let's put in another
 `mustRunAfter` relationship.
 
+    putOnShoes.mustRunAfter takeShower
 */
+    tasks.findByName('putOnShoes').mustRunAfter 'takeShower'
+}
 
-putOnShoes.mustRunAfter takeShower
 
 /*
-
 One more advanced thing we can do is look at all the tasks in the project and
 decide which ones we want to depend on. Let's make a task called `getEquipped`
 that depends on every task that starts with "putOn".
