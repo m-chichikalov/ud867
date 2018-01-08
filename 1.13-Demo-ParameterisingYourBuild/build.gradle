@@ -48,9 +48,9 @@ that properties defined this way shadow all other definitions.
 
 */
 
-ext {
-    greeting = "Hello from inside the build script"
-}
+// ext {
+//     greeting = "Hello from inside the build script"
+// }
 
 /*
 
